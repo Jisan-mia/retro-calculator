@@ -7,7 +7,7 @@
     ·
     <a href="https://github.com/Jisan-mia/retro-calculator/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/Jisan-mia/retro-calculator">Repo</a>
 </p>
 
 ![image](https://github.com/Jisan-mia/retro-calculator/assets/61211600/fe246bba-30ed-4cf7-91d6-7a95e08042dc)

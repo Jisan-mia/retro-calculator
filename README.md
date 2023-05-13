@@ -14,12 +14,12 @@
 
 ## Built With
 
-To Build this application, I used HTML5 and CSS3 for building the structure and styling it, JavaScript Classes
+To Build this application, I used HTML5 and CSS3 for building the structure and styling it, JavaScript and ES6 classes were used to encapsulate calculator logics and DOM manipulation.
 
 - JavaScript
 - ES6 Classes
 - HTML
-- CSS (Flexbox/Grid)
+- CSS (FlexBox/Grid)
 
 ## Future Updates
 
@@ -37,7 +37,7 @@ To Build this application, I used HTML5 and CSS3 for building the structure and 
 
 ## Acknowledgments
 
-- Retro style ui inspiration from this [Dribble Shot](https://dribbble.com/shots/15431730-Calculator-App/attachments/7200512?mode=media)
+- Retro style ui inspiration from this [Dribble Shot](https://dribbble.com/shots/15431730-Calculator-App)
 
 ## Support
 

@@ -1,10 +1,11 @@
 import { displayOutputResultNumber, operatorSymbols } from "./utils.js";
 
 const MULTIPLY_DIVIDE_REGEX =
-  /(?<operand1>\S+)\s*(?<operation>[÷×])\s*(?<operand2>\S+)/;
-const EXPONENT_REGEX = /(?<operand1>\S+)\s*(?<operation>\^)\s*(?<operand2>\S+)/;
+  /(?<operand1>[-\d]+)\s*(?<operation>[÷×])\s*(?<operand2>[-\d]+)/;
+const EXPONENT_REGEX =
+  /(?<operand1>[-\d]+)\s*(?<operation>\^)\s*(?<operand2>[-\d])+/;
 const ADD_SUBTRACT_REGEX =
-  /(?<operand1>\S+)\s*(?<operation>(?<!e)[\-\+])\s*(?<operand2>\S+)/;
+  /(?<operand1>[-\d]+)\s*(?<operation>(?<!e)[\-\+])\s*(?<operand2>[-\d]+)/;
 
 export default class Calculator {
   constructor(inputDisplay, outputResultDisplay) {
@@ -14,9 +15,8 @@ export default class Calculator {
     this.clear();
   }
 
-
   get input() {
-    return this.inputDisplay.textContent ?? '';
+    return this.inputDisplay.textContent ?? "";
   }
 
   set input(value) {
@@ -24,7 +24,7 @@ export default class Calculator {
   }
 
   get outputResult() {
-    return this.outputResultDisplay.textContent ?? '';
+    return this.outputResultDisplay.textContent ?? "";
   }
 
   set outputResult(value) {
@@ -55,25 +55,29 @@ export default class Calculator {
 
   choseOperation(operator) {
     if (checkIfDotOrOperationBeingDoubled(this.input)) return;
-    this.input += operator;
+    if (operator === "-") {
+      this.input = this.input + ` ${operator}`;
+      return;
+    }
+    this.input = this.input + `${operator}`;
   }
 
   calculate() {
     if (!this.input) return;
-    let result;
     const lastDigit = this.input[this.input.length - 1];
     if (lastDigit === ".") {
       this.input = this.input.substring(0, this.input.length - 1);
     }
     if (operatorSymbols.includes(this.input[this.input.length - 1])) {
-      result = "Syntax Error";
       this.input = "";
+      this.outputResult = "Syntax Error";
+      return;
     }
     const inputArr = this.input.split("");
-    if (inputArr[0] === "-") {
-      inputArr.splice(0, 2, `${inputArr[0].concat(inputArr[1])}`);
-    }
-    const equationResult = this.#parse(inputArr.join(" "));
+    // if (inputArr[0] === "-") {
+    //   inputArr.splice(0, 2, `${inputArr[0].concat(inputArr[1])}`);
+    // }
+    const equationResult = this.#parse(inputArr.join(""));
     if (equationResult.toString().includes("e")) {
       this.outputResult = equationResult;
       return;

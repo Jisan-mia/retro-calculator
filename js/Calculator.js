@@ -14,8 +14,9 @@ export default class Calculator {
     this.clear();
   }
 
+
   get input() {
-    return this.inputDisplay.textContent;
+    return this.inputDisplay.textContent ?? '';
   }
 
   set input(value) {
@@ -23,7 +24,7 @@ export default class Calculator {
   }
 
   get outputResult() {
-    return this.outputResultDisplay.textContent;
+    return this.outputResultDisplay.textContent ?? '';
   }
 
   set outputResult(value) {

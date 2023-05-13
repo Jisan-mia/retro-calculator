@@ -1,5 +1,11 @@
 import { displayOutputResultNumber, operatorSymbols } from "./utils.js";
 
+const MULTIPLY_DIVIDE_REGEX =
+  /(?<operand1>\S+)\s*(?<operation>[÷×])\s*(?<operand2>\S+)/;
+const EXPONENT_REGEX = /(?<operand1>\S+)\s*(?<operation>\^)\s*(?<operand2>\S+)/;
+const ADD_SUBTRACT_REGEX =
+  /(?<operand1>\S+)\s*(?<operation>(?<!e)[\-\+])\s*(?<operand2>\S+)/;
+
 export default class Calculator {
   constructor(inputDisplay, outputResultDisplay) {
     this.inputDisplay = inputDisplay;
@@ -62,13 +68,16 @@ export default class Calculator {
       result = "Syntax Error";
       this.input = "";
     }
-    const equationResult = this.#parse(this.input);
-    if (equationResult.includes("e")) {
+    const inputArr = this.input.split("");
+    if (inputArr[0] === "-") {
+      inputArr.splice(0, 2, `${inputArr[0].concat(inputArr[1])}`);
+    }
+    const equationResult = this.#parse(inputArr.join(" "));
+    if (equationResult.toString().includes("e")) {
       this.outputResult = equationResult;
       return;
     }
-    console.log(displayOutputResultNumber(this.#parse(this.input)));
-    this.outputResult = displayOutputResultNumber(this.#parse(this.input));
+    this.outputResult = displayOutputResultNumber(equationResult);
   }
 
   #parse(equation) {
@@ -81,21 +90,23 @@ export default class Calculator {
       const result = this.#handleMath(
         equation.match(MULTIPLY_DIVIDE_REGEX).groups
       );
+      console.log(result);
       const newEquation = equation.replace(MULTIPLY_DIVIDE_REGEX, result);
       return this.#parse(newEquation);
     } else if (equation.match(ADD_SUBTRACT_REGEX)) {
       const result = this.#handleMath(
         equation.match(ADD_SUBTRACT_REGEX).groups
       );
+      console.log(result);
       const newEquation = equation.replace(ADD_SUBTRACT_REGEX, result);
       return this.#parse(newEquation);
     } else {
-      return equation;
+      return parseFloat(equation);
     }
   }
 
   #handleMath({ operand1, operand2, operation }) {
-    console.log(operand1, operand2, operation);
+    console.log({ operand1, operand2, operation });
     const number1 = parseFloat(operand1);
     const number2 = parseFloat(operand2);
 
@@ -113,12 +124,6 @@ export default class Calculator {
     }
   }
 }
-
-const EXPONENT_REGEX = /(?<operand1>[-\d]+)\s*(?<operation>\^)\s*(?<operand2>[-\d]+)/;
-// const MULTIPLY_DIVIDE_REGEX =/(?<operand1>\d+)\s*(?<operator>[÷×])\s*(?<operand2>\d+)/;
-const MULTIPLY_DIVIDE_REGEX = /(?<operand1>\d+)\s*(?<operation>[÷ ×])\s*(?<operand2>\d+)/;
-const ADD_SUBTRACT_REGEX =  
-  /(?<operand1>\d+)\s*(?<operation>(?<!e)[\+\-])\s*(?<operand2>\d+)/;
 
 const checkIfDotOrOperationBeingDoubled = (input) => {
   const inputArr = input.split("");
